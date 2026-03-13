@@ -6,7 +6,6 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -15,7 +14,7 @@ import java.util.UUID;
 public class CreateSubscriptionRequest {
 
     @NotNull
-    private UUID userId;
+    private Long userId;
 
     @NotNull
     private Plan planType;

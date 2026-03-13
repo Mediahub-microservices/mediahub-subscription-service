@@ -1,6 +1,5 @@
 package com.mediahub.subscription_service.service;
 
-
 import com.mediahub.subscription_service.dto.request.CreateSubscriptionRequest;
 import com.mediahub.subscription_service.dto.response.SubscriptionResponse;
 
@@ -13,10 +12,12 @@ public interface SubscriptionService {
 
     SubscriptionResponse getSubscriptionById(UUID id);
 
-    List<SubscriptionResponse> getUserSubscriptions(UUID userId);
+    List<SubscriptionResponse> getUserSubscriptions(Long userId);
 
     SubscriptionResponse cancelSubscription(UUID id);
 
-    boolean hasActiveSubscription(UUID userId);
+    boolean hasActiveSubscription(Long userId);
+
+    Object getMediaInfo(Long mediaId);
 
 }

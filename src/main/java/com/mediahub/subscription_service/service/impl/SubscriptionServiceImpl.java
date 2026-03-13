@@ -20,9 +20,16 @@ import java.util.stream.Collectors;
 public class SubscriptionServiceImpl implements SubscriptionService {
 
     private final SubscriptionRepository repository;
+    private final com.mediahub.subscription_service.client.UserClient userClient;
+    private final org.springframework.web.reactive.function.client.WebClient.Builder webClientBuilder;
 
     @Override
     public SubscriptionResponse createSubscription(CreateSubscriptionRequest request) {
+        try {
+            userClient.getUserById(request.getUserId());
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("User not found: " + request.getUserId());
+        }
 
         Subscription sub = Subscription.builder()
                 .userId(request.getUserId())
@@ -48,7 +55,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public List<SubscriptionResponse> getUserSubscriptions(UUID userId) {
+    public List<SubscriptionResponse> getUserSubscriptions(Long userId) {
 
         return repository.findByUserId(userId)
                 .stream()
@@ -70,9 +77,19 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public boolean hasActiveSubscription(UUID userId) {
+    public boolean hasActiveSubscription(Long userId) {
 
         return repository.findByUserIdAndStatus(userId, SubscriptionStatus.ACTIVE)
                 .isPresent();
+    }
+
+    @Override
+    public Object getMediaInfo(Long mediaId) {
+        return webClientBuilder.build()
+                .get()
+                .uri("http://media-service/api/v1/media/{id}", mediaId)
+                .retrieve()
+                .bodyToMono(Object.class)
+                .block();
     }
 }

@@ -21,7 +21,7 @@ public class Subscription {
     private UUID id;
 
     @Column(nullable = false)
-    private UUID userId;
+    private Long userId;
 
     @Enumerated(EnumType.STRING)
     private Plan planType;

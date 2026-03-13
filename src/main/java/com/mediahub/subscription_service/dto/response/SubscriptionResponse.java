@@ -17,7 +17,7 @@ public class SubscriptionResponse {
 
     private UUID id;
 
-    private UUID userId;
+    private Long userId;
 
     private Plan planType;
 
